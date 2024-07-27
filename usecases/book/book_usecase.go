@@ -5,24 +5,30 @@ import (
 	"github.com/XEFF09/go-clean-arch/repositories"
 )
 
+//Todo: module interface
 type BookUseCase interface {
 	GetAllBooks() []entities.Book
 	CreateBook(book entities.Book) (*entities.Book, error) 
 }
 
+//Todo: module class that has repo
 type bookService struct {
 	bookRepo repositories.BookRepository
 }
 
+///Todo: module constructor
 func NewBookService(bookRepo repositories.BookRepository) BookUseCase {
+	//Todo: assign attr
 	return &bookService{
 		bookRepo: bookRepo,
 	}
 }
 
-func (b *bookService) GetAllBooks() []entities.Book {
-	return b.bookRepo.GetAll()
+//Todo: module methods (thisb *bookService) as this tho
+func (this_b *bookService) GetAllBooks() []entities.Book {
+	return this_b.bookRepo.GetAll()
 }
-func (b *bookService) CreateBook(book entities.Book) (*entities.Book, error) {
-	return b.bookRepo.Create(book)
+//Todo: module methods
+func (this_b *bookService) CreateBook(book entities.Book) (*entities.Book, error) {
+	return this_b.bookRepo.Create(book)
 }

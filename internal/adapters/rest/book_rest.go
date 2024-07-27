@@ -17,39 +17,39 @@ func NewBookRestHandler(bookUseCase usecases.BookUseCase) bookRestHandler {
 	}
 }
 
-func (b *bookRestHandler) GetAllBooks(c *fiber.Ctx) error {
+func (this_b *bookRestHandler) GetAllBooks(this_ctx *fiber.Ctx) error {
 	
-	books := b.bookUseCase.GetAllBooks()
-	return c.Status(200).JSON(
+	books := this_b.bookUseCase.GetAllBooks()
+	return this_ctx.Status(200).JSON(
 		books,
 	)
 }
 
-func (b *bookRestHandler) CreateBook(c *fiber.Ctx) error {
+func (this_b *bookRestHandler) CreateBook(this_ctx *fiber.Ctx) error {
 	var book entities.Book
 
-	err := c.BodyParser(&book)
+	err := this_ctx.BodyParser(&book)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		return this_ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Bad Request",
 		})
 	}
-	createdBook, err := b.bookUseCase.CreateBook(book)
+	createdBook, err := this_b.bookUseCase.CreateBook(book)
 	
 	if err != nil {
 		switch err {
 		case exceptions.DuplicateId:
-			return c.Status(fiber.StatusConflict).JSON(fiber.Map{
+			return this_ctx.Status(fiber.StatusConflict).JSON(fiber.Map{
 				"error": "Duplicate ID",
 			})
 		default:
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			return this_ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": "Internal Server Error",
 			})
 		}
 	}
 	
-	return c.Status(fiber.StatusCreated).JSON(
+	return this_ctx.Status(fiber.StatusCreated).JSON(
 		createdBook,
 	)
 }
